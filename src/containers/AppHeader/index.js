@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Layout, notification } from 'antd';
+import { Layout } from 'antd';
+import NotificationSystem from 'react-notification-system';
 import _ from 'lodash';
 import classnames from 'classnames';
 import SearchBox from '../../components/SearchBox';
@@ -30,11 +31,11 @@ class AppHeader extends Component {
   componentWillReceiveProps(nextProps) {
     const { placeSuggestionError, placeSuggestion } = nextProps;
     if (placeSuggestionError) {
-      notification['error']({
-        message: 'Error',
-        description: 'We’re sorry, something seems to have gone wrong. Please try again.',
+      this._notification.addNotification({
+        title: 'Error',
+        message: 'We’re sorry, something seems to have gone wrong. Please try again.',
+        level: 'error'
       });
-      return;
     }
     this.updateDataSource(placeSuggestion);
   }
@@ -111,6 +112,7 @@ class AppHeader extends Component {
           placeDatasource={this.state.placeDatasource}
           onSearchButtonClick={this.handleSearchButtonClick}
         />
+        <NotificationSystem ref={(elem) => { this._notification = elem; }} />
       </Header>
     );
   }
